@@ -20,7 +20,7 @@ def _initialize_attributes(model_class, name, bases, attrs):
     """Initialize the attributes of the model."""
     model_class._attributes = {}
     for k, v in attrs.iteritems():
-        if isinstance(v, Attribute):
+        if isinstance(v, (Attribute, DateField, DateTimeField)):
             model_class._attributes[k] = v
             v.name = v.name or k
 
@@ -72,7 +72,7 @@ def _initialize_indices(model_class, name, bases, attrs):
     """Stores the list of indexed attributes."""
     model_class._indices = []
     for k, v in attrs.iteritems():
-        if isinstance(v, (Attribute, ListField)) and v.indexed:
+        if isinstance(v, (Attribute, DateTimeField, DateTimeField, ListField)) and v.indexed:
             model_class._indices.append(k)
     if model_class._meta['indices']:
         model_class._indices.extend(model_class._meta['indices'])
